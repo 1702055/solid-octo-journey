@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt -BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" async></script>
+
+    <title>Quiz JavaScript</title >
+</head>
+<div id="quiz-container">
+  <h2 id="question"></h2>
+  <div id="options"></div>
+  <button id="next-btn">Próxima</button>
+</div>
+
+<div id="result-container" style="display: none;">
+  <h2>Resultado do Quiz</h2>
+  <p id="correct-answer"></p>
+  <p id="wrong-answer"></p>
+</div>
+
+<script>
+  const questions = [
+    {
+      question: "Qual é a capital do Brasil?",
+      options: ["Rio de Janeiro", "São Paulo", "Brasília", "Belo Horizonte"],
+      answer: "Brasília"
+    },
+    {
+      question: "Quem escreveu 'Dom Quixote'?",
+      options: ["Miguel de Cervantes", "Fernando Pessoa", "William Shakespeare", "Machado de Assis"],
+      answer: "Miguel de Cervantes"
+    },
+    {
+      question: "Qual é o maior planeta do Sistema Solar?",
+      options: ["Terra", "Júpiter", "Saturno", "Urano"],
+      answer: "Júpiter"
+    },
+    {
+      question: "Quem pintou 'Mona Lisa'?",
+      options: ["Pablo Picasso", "Leonardo da Vinci", "Vincent van Gogh", "Michelangelo"],
+      answer: "Leonardo da Vinci"
+    }
+  ];
+
+  let currentQuestion = 0;
+  let correctAnswers = 0;
+  let wrongAnswers = 0;
+
+  const questionElement = document.getElementById('question');
+  const optionsElement = document.getElementById('options');
+  const nextButton = document.getElementById('next-btn');
+  const resultContainer = document.getElementById('result-container');
+  const correctAnswerElement = document.getElementById('correct-answer');
+  const wrongAnswerElement = document.getElementById('wrong-answer');
+
+  function showQuestion(questionIndex) {
+    const q = questions[questionIndex];
+    questionElement.textContent = q.question;
+    optionsElement.innerHTML = '';
+    q.options.forEach(option => {
+      const button = document.createElement('button');
+      button.textContent = option;
+      button.addEventListener('click', () => checkAnswer(option));
+      optionsElement.appendChild(button);
+    });
+  }
+
+  function checkAnswer(selectedOption) {
+    const currentQ = questions[currentQuestion];
+    if (selectedOption === currentQ.answer) {
+      correctAnswers++;
+    } else {
+      wrongAnswers++;
+    }
+  }
+
+  function showResult() {
+    resultContainer.style.display = 'block';
+    correctAnswerElement.textContent = `Respostas corretas: ${correctAnswers}`;
+    wrongAnswerElement.textContent = `Respostas erradas: ${wrongAnswers}`;
+  }
+
+  nextButton.addEventListener('click', () => {
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      showQuestion(currentQuestion);
+    } else {
+      showResult();
+    }
+  });
+
+  showQuestion(currentQuestion);
+</script>
+</body>
+</html>
